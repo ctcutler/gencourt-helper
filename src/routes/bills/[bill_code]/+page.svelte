@@ -2,25 +2,27 @@
 	let { data } = $props();
 
 	const bill = data.bills.find((x) => x.bill_code == data.selected_bill_code);
+	let upcoming_hearing_date: Date | null = $state(null);
+	const now = new Date();
+	if (bill) {
+		for (const docket_entry of bill.docket) {
+			if (docket_entry.is_public_hearing && docket_entry.date > now) {
+				upcoming_hearing_date = docket_entry.date;
+			}
+		}
+	}
 </script>
 
-<h1>{bill?.bill_code} details</h1>
-
-<p>Bill title: {bill?.title}</p>
-<iframe title="bill info" src="https://gc.nh.gov/bill_status/billinfo.aspx?id={bill?.id}&inflect=2"
+{#if bill}
+ 
+{#if upcoming_hearing_date}
+  <div><p>Upcoming public hearing on: {upcoming_hearing_date}</p></div>
+{/if}
+<iframe
+	class="h-screen w-full"
+	title="bill info"
+	src="https://gc.nh.gov/bill_status/billinfo.aspx?id={bill?.id}&inflect=2"
 ></iframe>
-
-<p>Feedback page</p>
-<p>Instructions for leaving feedback</p>
-
-<a href="/bills">Return to list of bills</a>
-
-<ul>
-	<li>
-		FIXME: build bill details iframe (need id, etc.)... id is in
-		https://gc.nh.gov/dynamicdatadump/LsrsOnly.txt
-	</li>
-	<li>FIXME: build bill text iframe (need id, etc.)</li>
-	<li>FIXME: build testimony submission iframe</li>
-	<li>FIXME: build testimony instructions text</li>
-</ul>
+{:else}
+<p>Unable to find {data.selected_bill_code}</p>
+{/if}
