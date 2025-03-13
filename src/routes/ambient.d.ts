@@ -8,5 +8,6 @@ type Bill = {
 type DocketEntry = {
     description: string,
     date: Date,
-    is_public_hearing: Boolean,
+    is_hearing: Boolean,
+    is_senate: Boolean,
 }

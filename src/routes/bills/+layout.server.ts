@@ -16,6 +16,7 @@ const LSRS_ONLY_BILL_ID_INDEX: number = 2;
 
 // Docket table
 const DOCKET_BILL_CODE_INDEX: number = 3;
+const DOCKET_BODY_INDEX: number = 4;
 const DOCKET_DESCRIPTION_INDEX: number = 5;
 
 async function fetchData(fetch: Function, url: string): Promise<string> {
@@ -56,11 +57,12 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
       const bill_code = docket_entry[DOCKET_BILL_CODE_INDEX];
       const description = docket_entry[DOCKET_DESCRIPTION_INDEX];
       const date = parseDateFromDescription(description);
-      const is_public_hearing = description?.search(/public hearing/i) != -1;
+      const is_hearing = description?.search(/hearing/i) != -1;
+      const is_senate = docket_entry[DOCKET_BODY_INDEX] == "S";
       if (!bill_codes_to_dockets.has(bill_code)) {
         bill_codes_to_dockets.set(bill_code, []);
       }
-      bill_codes_to_dockets.get(bill_code)?.push({ description, date, is_public_hearing });
+      bill_codes_to_dockets.get(bill_code)?.push({ description, date, is_hearing, is_senate });
     }
 
     const lsrs = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/LSRs.txt");
