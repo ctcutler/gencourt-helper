@@ -10,4 +10,5 @@ type DocketEntry = {
     date: Date,
     is_hearing: Boolean,
     is_senate: Boolean,
+    committee: string,
 }

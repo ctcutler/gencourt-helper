@@ -19,13 +19,16 @@ const DOCKET_BILL_CODE_INDEX: number = 3;
 const DOCKET_BODY_INDEX: number = 4;
 const DOCKET_DESCRIPTION_INDEX: number = 5;
 
+// Committees table
+const COMMITTEES_NAME_INDEX: number = 1;
+
 async function fetchData(fetch: Function, url: string): Promise<string> {
   const response: Response = await fetch(url);
   return await response.text();
 }
 
 // returns an "invalid date" Date object if no date is found
-function parseDateFromDescription(description: string): Date {
+function parse_date_from_description(description: string): Date {
   if (description) {
     for (const token of description.split(" ")) {
       const d = new Date(token);
@@ -35,6 +38,17 @@ function parseDateFromDescription(description: string): Date {
     }
   }
   return new Date("");
+}
+
+function parse_committee_from_description(committees: Array<string>, description: string): string {
+  if (description) {
+    for (const committee of committees) {
+      if (description.search(new RegExp(committee)) != -1) {
+        return committee;
+      }
+    }
+  }
+  return "";
 }
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
@@ -50,19 +64,45 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
       )
     );
 
+    // get Committees just to enumerate committee names
+    const committees_pipe_separated = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Committees.txt");
+    const committees: Array<string> = committees_pipe_separated.split(
+      "\n"
+    ).filter(
+      x => x
+    ).map(
+      x => x.split("|")[COMMITTEES_NAME_INDEX].trim()
+    ).sort(
+      // sort by descending length to ensure we match the most specific name first
+      (a, b) => b.length - a.length
+    );
+
     const docket = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Docket.txt");
     const docket_entries: Array<Array<string>> = docket.split("\n").map(x => x.split("|"));
     const bill_codes_to_dockets: Map<string, Array<DocketEntry>> = new Map();
+    const bill_codes_to_committees: Map<string, string> = new Map();
     for (const docket_entry of docket_entries) {
       const bill_code = docket_entry[DOCKET_BILL_CODE_INDEX];
       const description = docket_entry[DOCKET_DESCRIPTION_INDEX];
-      const date = parseDateFromDescription(description);
+      const date = parse_date_from_description(description);
       const is_hearing = description?.search(/hearing/i) != -1;
       const is_senate = docket_entry[DOCKET_BODY_INDEX] == "S";
+
+      // check for new committee and use it for this and subsequent docket entries if found
+      const committee = parse_committee_from_description(committees, description);
+      if (committee) {
+        bill_codes_to_committees.set(bill_code, committee);
+      }
+
       if (!bill_codes_to_dockets.has(bill_code)) {
         bill_codes_to_dockets.set(bill_code, []);
       }
-      bill_codes_to_dockets.get(bill_code)?.push({ description, date, is_hearing, is_senate });
+      bill_codes_to_dockets.get(bill_code)?.push(
+        {
+          description, date, is_hearing, is_senate,
+          committee: bill_codes_to_committees.get(bill_code) || "",
+        }
+      );
     }
 
     const lsrs = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/LSRs.txt");

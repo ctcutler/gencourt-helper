@@ -26,7 +26,7 @@
 	{#if upcoming_hearing}
 		<div>
 			<p>
-				Upcoming hearing on: {formatDate(upcoming_hearing.date)}.
+				Upcoming hearing on: {formatDate(upcoming_hearing.date)}, committee: {upcoming_hearing.committee}.
 				<a class="font-bold" href={testimony_url}>Click here</a> to indicate your support or opposition.
 			</p>
 		</div>
