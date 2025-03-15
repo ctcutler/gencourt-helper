@@ -40,6 +40,7 @@ function parse_date_from_description(description: string): Date {
   return new Date("");
 }
 
+// returns empty string if committee is not found
 function parse_committee_from_description(committees: Array<string>, description: string): string {
   if (description) {
     for (const committee of committees) {
@@ -81,12 +82,14 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
     const docket_entries: Array<Array<string>> = docket.split("\n").map(x => x.split("|"));
     const bill_codes_to_dockets: Map<string, Array<DocketEntry>> = new Map();
     const bill_codes_to_committees: Map<string, string> = new Map();
-    for (const docket_entry of docket_entries) {
-      const bill_code = docket_entry[DOCKET_BILL_CODE_INDEX];
-      const description = docket_entry[DOCKET_DESCRIPTION_INDEX];
+    const bill_codes_to_upcoming_hearings: Map<string, Array<DocketEntry>> = new Map();
+    const now: Date = new Date();
+    for (const de of docket_entries) {
+      const bill_code = de[DOCKET_BILL_CODE_INDEX];
+      const description = de[DOCKET_DESCRIPTION_INDEX];
       const date = parse_date_from_description(description);
       const is_hearing = description?.search(/hearing/i) != -1;
-      const is_senate = docket_entry[DOCKET_BODY_INDEX] == "S";
+      const is_senate = de[DOCKET_BODY_INDEX] == "S";
 
       // check for new committee and use it for this and subsequent docket entries if found
       const committee = parse_committee_from_description(committees, description);
@@ -94,15 +97,22 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         bill_codes_to_committees.set(bill_code, committee);
       }
 
+      const docket_entry: DocketEntry = {
+        description, date, is_hearing, is_senate,
+        committee: bill_codes_to_committees.get(bill_code) || "",
+      };
+
       if (!bill_codes_to_dockets.has(bill_code)) {
         bill_codes_to_dockets.set(bill_code, []);
       }
-      bill_codes_to_dockets.get(bill_code)?.push(
-        {
-          description, date, is_hearing, is_senate,
-          committee: bill_codes_to_committees.get(bill_code) || "",
+      bill_codes_to_dockets.get(bill_code)?.push(docket_entry);
+
+      if (docket_entry.is_hearing && docket_entry.date > now) {
+        if (!bill_codes_to_upcoming_hearings.has(bill_code)) {
+          bill_codes_to_upcoming_hearings.set(bill_code, []);
         }
-      );
+        bill_codes_to_upcoming_hearings.get(bill_code)?.push(docket_entry);
+      }
     }
 
     const lsrs = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/LSRs.txt");
@@ -114,6 +124,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         docket: bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || [],
         title: bill_fields[LSRS_BILL_TITLE_INDEX],
         bill_code: bill_fields[LSRS_BILL_CODE_INDEX],
+        upcoming_hearings: bill_codes_to_upcoming_hearings.get(bill_fields[LSRS_BILL_CODE_INDEX]),
       }
     ));
 
