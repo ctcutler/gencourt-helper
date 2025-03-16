@@ -6,16 +6,16 @@
 	const { bill_code } = page.params;
 	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
 	const hearingDate: string = formatDate(bill?.upcoming_hearings?.[0].date);
-	const committee: string = bill?.upcoming_hearings?.[0].committee || "";
 </script>
 
 {#if bill}
 	{#if bill.upcoming_hearings}
-		<div>
+		<div class="bg-yellow-200 p-2">
 			<p>
-				Upcoming hearing on: {hearingDate}, committee: {committee}.
-				<a class="font-bold" href="{bill_code}/respond">Click here</a> to indicate your support or
-				opposition.
+				This bill will have a public hearing on {hearingDate}.
+				<a class="font-bold text-blue-600" href="{bill_code}/respond"
+					>Click/tap this link to support or oppose it.</a
+				>
 			</p>
 		</div>
 	{/if}
