@@ -19,7 +19,7 @@
 {#if bill}
 	{#if bill.upcoming_hearings}
 		<div class="bg-yellow-200 p-2">
-			<p>To indicate your position on <span class="font-bold">{bill_code}</span>:</p>
+			<p>To indicate your position on <a href="/bills/{bill_code}" class="font-bold text-blue-600">{bill_code}</a>:</p>
 			<ol class="list-outside list-disc ps-5">
 				{#if !is_senate}
 					<li>Fill in your personal information</li>

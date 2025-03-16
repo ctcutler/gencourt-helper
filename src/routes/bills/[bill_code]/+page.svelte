@@ -12,7 +12,7 @@
 	{#if bill.upcoming_hearings}
 		<div class="bg-yellow-200 p-2">
 			<p>
-				This bill will have a public hearing on {hearingDate}.
+				This bill will have a public hearing on <span class="font-bold">{hearingDate}</span>.
 				<a class="font-bold text-blue-600" href="{bill_code}/respond"
 					>Click/tap this link to support or oppose it.</a
 				>
