@@ -1,4 +1,5 @@
 import type { LayoutServerLoad } from './$types';
+import { DateTime } from 'luxon';
 
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
@@ -23,6 +24,10 @@ const DOCKET_DESCRIPTION_INDEX: number = 5;
 // Committees table
 const COMMITTEES_NAME_INDEX: number = 1;
 
+// date/time regular expressions
+const DATE_RE: RegExp = /(\d{2})\/(\d{2})\/(\d{4})/;
+const TIME_RE: RegExp = /(\d{2}):(\d{2}) (am|pm)/;
+
 async function fetchData(fetch: Function, url: string): Promise<string> {
   const response: Response = await fetch(url);
   return await response.text();
@@ -31,13 +36,28 @@ async function fetchData(fetch: Function, url: string): Promise<string> {
 // returns an "invalid date" Date object if no date is found
 function parse_date_from_description(description: string): Date {
   if (description) {
-    for (const token of description.split(" ")) {
-      const d = new Date(token);
-      if (!Number.isNaN(d.valueOf())) {
-        return d;
-      }
+    const date_match = description.match(DATE_RE);
+    const time_match = description.match(TIME_RE);
+
+    if (date_match && time_match) {
+      const [full_date, month, day, year] = date_match;
+      const [full_time, hour, minute, ampm] = time_match;
+
+      return DateTime.fromObject(
+        {
+          year: Number(year),
+          month: Number(month),
+          day: Number(day),
+          hour: ampm == "am" ? Number(hour) : Number(hour) + 12,
+          minute: Number(minute),
+        },
+        {
+          zone: 'America/New_York'
+        }
+      ).toJSDate();
     }
   }
+
   return new Date("");
 }
 
@@ -137,7 +157,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         if (!committees_to_bills.has(committee)) {
           committees_to_bills.set(committee, []);
         }
-        committees_to_bills.get(committee)?.push(bill);          
+        committees_to_bills.get(committee)?.push(bill);
       }
     }
 
