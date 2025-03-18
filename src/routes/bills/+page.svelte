@@ -5,7 +5,7 @@
 </script>
 
 <div class="max-w-4xl p-5">
-	<h1 class="p-2 text-3xl font-bold">Bills With a Scheduled Public Hearing</h1>
+	<h1 class="p-2 text-3xl font-bold">Bills With a Scheduled Hearing</h1>
 	<ul>
 		{#each data.committees_to_bills as committee_to_bill}
 			<h2 class="p-2 text-xl font-bold">{committee_to_bill[0]} Committee</h2>
@@ -15,20 +15,6 @@
 					<span class="italic">Hearing date: {format_date(bill.upcoming_hearings?.[0].date)}</span>
 				</li>
 			{/each}
-		{/each}
-	</ul>
-</div>
-
-<div class="max-w-4xl p-5">
-	<h1 class="p-2 text-3xl font-bold">
-		All Bills & Resolutions from the Current Legislative Session
-	</h1>
-
-	<ul>
-		{#each data.bills as bill}
-			<li class="p-2">
-				<a href="/bills/{bill.bill_code}" class="font-bold underline">{bill.bill_code}</a>: {bill.title}
-			</li>
 		{/each}
 	</ul>
 </div>

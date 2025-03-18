@@ -10,13 +10,20 @@
 
 {#if bill}
 	{#if bill.upcoming_hearings}
-		<div class="bg-yellow-200 p-2">
-			<p>
-				This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>.
-				<a class="font-bold text-blue-600" href="{bill_code}/respond"
-					>Click/tap this link to support or oppose it.</a
-				>
-			</p>
+		<div class="flex bg-yellow-200 p-2">
+			<div class="flex-1">
+				<p>
+					This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>.
+					<a class="font-bold text-blue-600" href="{bill_code}/respond"
+						>Click/tap this link to support or oppose it.</a
+					>
+				</p>
+			</div>
+			<div class="flex-1 text-right">
+				<p>
+					Return to: <a class="font-bold text-blue-600" href="/bills">Bills List</a>
+				</p>
+			</div>
 		</div>
 	{/if}
 
