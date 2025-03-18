@@ -2,6 +2,7 @@ import type { LayoutServerLoad } from './$types';
 
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
+let committees_to_bills: Map<string, Array<Bill>>;
 
 let last_bills_retrieval: Date;
 const BILLS_CACHE_EXPIRY: number = 4 * 3600 * 1000; // ms
@@ -128,10 +129,22 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
       }
     ));
 
+    // group bills by committee for convenience
+    committees_to_bills = new Map();
+    for (const bill of bills) {
+      const committee = bill.upcoming_hearings?.[0].committee;
+      if (committee) {
+        if (!committees_to_bills.has(committee)) {
+          committees_to_bills.set(committee, []);
+        }
+        committees_to_bills.get(committee)?.push(bill);          
+      }
+    }
+
     last_bills_retrieval = new Date();
   }
 
   return {
-    bills,
+    bills, committees_to_bills
   }
 };
