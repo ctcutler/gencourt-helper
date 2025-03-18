@@ -160,6 +160,13 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         committees_to_bills.get(committee)?.push(bill);
       }
     }
+    // sort by committee name
+    committees_to_bills = new Map([...committees_to_bills.entries()].sort());
+
+    // for every committee, sort bills by hearing date
+    for (const entry of committees_to_bills) {
+      entry[1].sort((a, b) => a.upcoming_hearings?.[0].date.getTime() - b.upcoming_hearings?.[0].date.getTime());
+    }
 
     last_bills_retrieval = new Date();
   }
