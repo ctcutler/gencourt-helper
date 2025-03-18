@@ -8,12 +8,16 @@
 	const SENATE_TESTIMONY_URL = 'https://gc.nh.gov/remotecommittee/senate.aspx';
 	const HOUSE_TESTIMONY_URL = 'https://gc.nh.gov/house/committees/remotetestimony/default.aspx';
 	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
-	const hearingDate: string = format_date(bill?.upcoming_hearings?.[0].date);
+	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 	const committee: string = bill?.upcoming_hearings?.[0].committee;
 	const is_senate: Boolean = bill?.upcoming_hearings?.[0].is_senate;
 	const testimony_url: string = bill?.upcoming_hearings?.[0].is_senate
 		? SENATE_TESTIMONY_URL
 		: HOUSE_TESTIMONY_URL;
+
+	console.log(bill?.upcoming_hearings?.[0].date);
+	console.log(bill?.upcoming_hearings?.[0].date.valueOf());
+	console.log(`${hearing_date}`)
 </script>
 
 {#if bill}
@@ -24,7 +28,7 @@
 				{#if !is_senate}
 					<li>Fill in your personal information</li>
 				{/if}
-				<li>Select <span class="font-bold">{hearingDate}</span> from the calendar</li>
+				<li>Select <span class="font-bold">{hearing_date}</span> from the calendar</li>
 				<li>Select <span class="font-bold">{committee}</span> from the list of committees</li>
 				<li>Select <span class="font-bold">{bill_code}</span> from the list of bills</li>
 				<li>
