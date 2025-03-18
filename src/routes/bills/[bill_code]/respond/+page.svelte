@@ -14,10 +14,6 @@
 	const testimony_url: string = bill?.upcoming_hearings?.[0].is_senate
 		? SENATE_TESTIMONY_URL
 		: HOUSE_TESTIMONY_URL;
-
-	console.log(bill?.upcoming_hearings?.[0].date);
-	console.log(bill?.upcoming_hearings?.[0].date.valueOf());
-	console.log(`${hearing_date}`)
 </script>
 
 {#if bill}
