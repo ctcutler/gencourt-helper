@@ -21,7 +21,7 @@
 			</div>
 			<div class="flex-1 text-right">
 				<p>
-					Return to: <a class="font-bold text-blue-600" href="/bills">Bills List</a>
+					Return to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
 				</p>
 			</div>
 		</div>

@@ -1,9 +1,12 @@
 import type { LayoutServerLoad } from './$types';
 import { DateTime } from 'luxon';
 
+// TODO: add bill sponsors by retrieving LSRSponsors and legislators then relating them to 
+// LSRs using LSRSponsors [1] and [3] to relate to LSR and legislator ids respectively
+
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
-let committees_to_bills: Map<string, Array<Bill>>;
+let hearings: Map<string, Map<string, Array<Bill>>>;
 
 let last_bills_retrieval: Date;
 const BILLS_CACHE_EXPIRY: number = 4 * 3600 * 1000; // ms
@@ -149,29 +152,33 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
       }
     ));
 
-    // group bills by committee for convenience
-    committees_to_bills = new Map();
+    // group bills with upcoming hearings by committee and date for convenience
+    hearings = new Map();
     for (const bill of bills) {
       const committee = bill.upcoming_hearings?.[0].committee;
-      if (committee) {
-        if (!committees_to_bills.has(committee)) {
-          committees_to_bills.set(committee, []);
+      const hearing_date = DateTime.fromJSDate(bill.upcoming_hearings?.[0].date).toLocaleString(DateTime.DATE_SHORT);
+      if (committee && hearing_date) {
+        if (!hearings.has(committee)) {
+          hearings.set(committee, new Map());
         }
-        committees_to_bills.get(committee)?.push(bill);
+        if (!hearings.get(committee)?.has(hearing_date)) {
+          hearings.get(committee)?.set(hearing_date, []);
+        }
+        hearings.get(committee)?.get(hearing_date)?.push(bill);
       }
     }
     // sort by committee name
-    committees_to_bills = new Map([...committees_to_bills.entries()].sort());
+    hearings = new Map([...hearings.entries()].sort());
 
     // for every committee, sort bills by hearing date
-    for (const entry of committees_to_bills) {
-      entry[1].sort((a, b) => a.upcoming_hearings?.[0].date.getTime() - b.upcoming_hearings?.[0].date.getTime());
+    for (const [committee, committe_hearings] of hearings) {
+      hearings.set(committee, new Map([...committe_hearings.entries()].sort()));
     }
 
     last_bills_retrieval = new Date();
   }
 
   return {
-    bills, committees_to_bills
+    bills, hearings
   }
 };
