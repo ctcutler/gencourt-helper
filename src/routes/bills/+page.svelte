@@ -2,6 +2,14 @@
 	let { data } = $props();
 </script>
 
+<div class="bg-yellow-200 p-2">
+	<p class="max-w-4xl">
+		Welcome to the General Court Helper, a tool to make it easier to find and give feedback on bills
+		being considered by New Hampshire's state legislature (a.k.a. the General Court). Click on the
+		bill number below to see details and find instructions to indicate your support or opposition.
+	</p>
+</div>
+
 <div class="max-w-4xl p-5">
 	<h1 class="text-3xl font-bold">Scheduled Hearings</h1>
 	<ul>
@@ -11,11 +19,11 @@
 				<ul>
 					{#each committee_dates[1] as date_bills}
 						<li>
-							<h3 class="pl-4 pt-2 text-l italic">{date_bills[0]}</h3>
+							<h3 class="text-l pt-2 pl-4 italic">{date_bills[0]}</h3>
 							<ul>
 								{#each date_bills[1] as bill}
 									<li class="pl-8">
-										<a href="/bills/{bill.bill_code}" class="font-bold underline"
+										<a href="/bills/{bill.bill_code}" class="font-bold text-blue-600"
 											>{bill.bill_code}</a
 										>: {bill.title}
 									</li>
