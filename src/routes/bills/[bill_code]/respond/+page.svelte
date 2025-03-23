@@ -44,11 +44,12 @@
 			</div>
 			<div class="flex-1 text-right">
 				<p>
-					Return to: <a class="font-bold text-blue-600" href="/bills">Hearings</a> |
-					<a class="font-bold text-blue-600" href="/bills/{bill_code}">{bill_code}</a>
+					<a class="font-bold text-blue-600" href="/bills">Back to Hearings</a>
+				</p>
+				<p>
+					<a class="font-bold text-blue-600" href="/bills/{bill_code}">Back to {bill_code}</a>
 				</p>
 			</div>
-
 		</div>
 	{/if}
 
