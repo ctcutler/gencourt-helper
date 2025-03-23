@@ -76,6 +76,14 @@ function parse_committee_from_description(committees: Array<string>, description
   return "";
 }
 
+function get_house_committees(bill_docket: Array<DocketEntry>): Array<string> {
+  return bill_docket.filter(
+    docket_entry => !docket_entry.is_senate && docket_entry.committee
+  ).map(
+    docket_entry => docket_entry.committee
+  );
+}
+
 export const load: LayoutServerLoad = async ({ fetch }) => {
   if (!bills || !last_bills_retrieval || new Date().getTime() - last_bills_retrieval.getTime() > BILLS_CACHE_EXPIRY) {
 
@@ -149,6 +157,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
         docket: bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || [],
         title: bill_fields[LSRS_BILL_TITLE_INDEX],
         bill_code: bill_fields[LSRS_BILL_CODE_INDEX],
+        house_committees: get_house_committees(bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || []),
         upcoming_hearings: bill_codes_to_upcoming_hearings.get(bill_fields[LSRS_BILL_CODE_INDEX]),
       }
     ));

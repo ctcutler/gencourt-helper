@@ -4,6 +4,7 @@ type Bill = {
     bill_code: string,
     docket: Array[DocketEntry],
     upcoming_hearings: Array[DocketEntry],
+    house_committees: Array<string>,
 }
 
 type DocketEntry = {

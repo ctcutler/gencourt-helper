@@ -13,11 +13,16 @@
 		<div class="flex bg-yellow-200 p-2">
 			<div class="flex-1">
 				<p>
-					This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>.
-					<a class="font-bold text-blue-600" href="{bill_code}/respond"
-						>Click/tap this link to support or oppose it.</a
-					>
+					This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>. You can:
 				</p>
+				<ul class="list-outside list-disc ps-5">
+					<li>
+						<a class="font-bold text-blue-600" href="{bill_code}/testimony">See other people's testimony</a>
+					</li>
+					<li>
+						<a class="font-bold text-blue-600" href="{bill_code}/respond">Support or oppose it</a>
+					</li>
+				</ul>
 			</div>
 			<div class="flex-1 text-right">
 				<p>
