@@ -118,7 +118,8 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
       // check for new committee and use it for this and subsequent docket entries if found
       const committee = parse_committee_from_description(committees, description);
       if (committee) {
-        bill_codes_to_committees.set(bill_code, committee);
+        const fully_qualified_committee = (is_senate ? "Senate" : "House") + " " + committee;
+        bill_codes_to_committees.set(bill_code, fully_qualified_committee);
       }
 
       const docket_entry: DocketEntry = {
