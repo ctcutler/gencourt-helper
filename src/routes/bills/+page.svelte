@@ -13,15 +13,15 @@
 <div class="max-w-4xl p-5">
 	<h1 class="text-3xl font-bold">Scheduled Hearings</h1>
 	<ul>
-		{#each data.hearings as committee_dates}
+		{#each data.hearings as [ committee, dates ]}
 			<li>
-				<h2 class="pt-6 text-xl font-bold">{committee_dates[0]} Committee</h2>
+				<h2 class="pt-6 text-xl font-bold">{committee} Committee</h2>
 				<ul>
-					{#each committee_dates[1] as date_bills}
+					{#each dates as [date, bills]}
 						<li>
-							<h3 class="text-l pt-2 pl-4 italic">{date_bills[0]}</h3>
+							<h3 class="text-l pt-2 pl-4 italic">{date}</h3>
 							<ul>
-								{#each date_bills[1] as bill}
+								{#each bills as bill}
 									<li class="pl-8">
 										<a href="/bills/{bill.bill_code}" class="font-bold text-blue-600"
 											>{bill.bill_code}</a
