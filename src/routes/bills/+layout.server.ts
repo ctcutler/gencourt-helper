@@ -1,9 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 import { DateTime } from 'luxon';
 
-// TODO: add bill sponsors by retrieving LSRSponsors and legislators then relating them to 
-// LSRs using LSRSponsors [1] and [3] to relate to LSR and legislator ids respectively
-
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
 let hearings: Map<string, Map<string, Array<Bill>>>;

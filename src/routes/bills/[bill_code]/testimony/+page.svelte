@@ -7,7 +7,6 @@
 
 	const HOUSE_SUBMITTED_TESTIMONY_URL = '';
 	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
-    // TODO: handle more than one house committee
 	const committee: string | undefined = bill?.house_committees?.[0];
 </script>
 
