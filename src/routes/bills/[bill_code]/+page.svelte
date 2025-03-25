@@ -8,35 +8,40 @@
 	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 </script>
 
-{#if bill}
-	{#if bill.upcoming_hearings}
-		<div class="flex bg-yellow-200 p-2">
-			<div class="flex-1">
-				<p>
-					This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>. You can:
-				</p>
-				<ul class="list-outside list-disc ps-5">
-					<li>
-						<a class="font-bold text-blue-600" href="{bill_code}/testimony">See other people's testimony</a>
-					</li>
-					<li>
-						<a class="font-bold text-blue-600" href="{bill_code}/respond">Support or oppose it</a>
-					</li>
-				</ul>
+<div class="flex h-dvh flex-col">
+	{#if bill}
+		{#if bill.upcoming_hearings}
+			<div class="flex bg-yellow-200 p-2">
+				<div class="flex-1">
+					<p>
+						This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>.
+						You can:
+					</p>
+					<ul class="list-outside list-disc ps-5">
+						<li>
+							<a class="font-bold text-blue-600" href="{bill_code}/testimony"
+								>See other people's testimony</a
+							>
+						</li>
+						<li>
+							<a class="font-bold text-blue-600" href="{bill_code}/respond">Support or oppose it</a>
+						</li>
+					</ul>
+				</div>
+				<div class="flex-1 text-right">
+					<p>
+						Return to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
+					</p>
+				</div>
 			</div>
-			<div class="flex-1 text-right">
-				<p>
-					Return to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
-				</p>
-			</div>
-		</div>
-	{/if}
+		{/if}
 
-	<iframe
-		class="h-screen w-full"
-		title="bill info"
-		src="https://gc.nh.gov/bill_status/billinfo.aspx?id={bill?.id}&inflect=2"
-	></iframe>
-{:else}
-	<p>Unable to find bill.</p>
-{/if}
+		<iframe
+			class="w-full grow"
+			title="bill info"
+			src="https://gc.nh.gov/bill_status/billinfo.aspx?id={bill?.id}&inflect=2"
+		></iframe>
+	{:else}
+		<p>Unable to find bill.</p>
+	{/if}
+</div>
