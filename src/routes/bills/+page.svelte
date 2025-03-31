@@ -3,11 +3,24 @@
 </script>
 
 <div class="flex justify-center bg-yellow-200 p-2">
-	<p class="max-w-4xl">
-		Welcome to the General Court Helper, a tool to make it easier to find and give feedback on bills
-		being considered by New Hampshire's state legislature (a.k.a. the General Court). Click on the
-		bill number below to see details and find instructions to indicate your support or opposition.
-	</p>
+	<div class="flex flex-col">
+		<p class="max-w-4xl">
+			Welcome to the General Court Helper, a tool to make it easier to find and give feedback on
+			bills being considered by New Hampshire's state legislature (a.k.a. the General Court). Click
+			on the bill number below to see details and find instructions to indicate your support or
+			opposition.
+		</p>
+		<p class="max-w-4xl italic text-right text-xs">
+			(Built by Chris Cutler. <a
+				class="font-bold text-blue-600"
+				href="mailto:gencourthelper@gmail.com">Feedback</a
+			>
+			is welcome and you can read the
+			<a class="font-bold text-blue-600" href="https://github.com/ctcutler/gencourt-helper"
+				>source code here.</a
+			>)
+		</p>
+	</div>
 </div>
 
 <div class="flex justify-center">
