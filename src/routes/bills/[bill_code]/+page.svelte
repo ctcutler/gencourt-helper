@@ -11,8 +11,13 @@
 <div class="flex h-dvh flex-col">
 	{#if bill}
 		{#if bill.upcoming_hearings}
-			<div class="flex bg-yellow-200 p-2">
-				<div class="flex-1">
+			<div class="bg-yellow-200 p-2">
+				<div class="float-right rounded-lg bg-yellow-50 p-2 text-right">
+					<p>
+						Back to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
+					</p>
+				</div>
+				<div>
 					<p>
 						This bill will have a public hearing on <span class="font-bold">{hearing_date}</span>.
 						You can:
@@ -28,13 +33,9 @@
 						</li>
 					</ul>
 				</div>
-				<div class="flex-1 text-right">
-					<p>
-						Return to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
-					</p>
-				</div>
 			</div>
 		{/if}
+		<div class="border"></div>
 
 		<iframe
 			class="w-full grow"

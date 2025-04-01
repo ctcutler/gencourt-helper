@@ -10,8 +10,8 @@
 			on the bill number below to see details and find instructions to indicate your support or
 			opposition.
 		</p>
-		<p class="max-w-4xl italic text-right text-xs">
-			(Built by Chris Cutler. <a
+		<p class="max-w-4xl text-right text-xs italic">
+			(Built by <a href="https://github.com/ctcutler" class="font-bold text-blue-600">Chris Cutler</a>. <a
 				class="font-bold text-blue-600"
 				href="mailto:gencourthelper@gmail.com">Feedback</a
 			>
@@ -22,6 +22,7 @@
 		</p>
 	</div>
 </div>
+<div class="border"></div>
 
 <div class="flex justify-center">
 	<div class="max-w-4xl p-5">

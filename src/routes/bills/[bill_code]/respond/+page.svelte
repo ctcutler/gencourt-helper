@@ -19,8 +19,16 @@
 <div class="flex h-dvh flex-col">
 	{#if bill}
 		{#if bill.upcoming_hearings}
-			<div class="flex bg-yellow-200 p-2">
-				<div class="flex-1">
+			<div class="bg-yellow-200 p-2">
+				<div class="float-right text-right bg-yellow-50 p-2 rounded-lg">
+					<p>
+						<a class="font-bold text-blue-600" href="/bills">Back to Hearings</a>
+					</p>
+					<p>
+						<a class="font-bold text-blue-600" href="/bills/{bill_code}">Back to {bill_code}</a>
+					</p>
+				</div>
+				<div>
 					<p>
 						To indicate your position on <a
 							href="/bills/{bill_code}"
@@ -44,16 +52,9 @@
 						</li>
 					</ol>
 				</div>
-				<div class="flex-1 text-right">
-					<p>
-						<a class="font-bold text-blue-600" href="/bills">Back to Hearings</a>
-					</p>
-					<p>
-						<a class="font-bold text-blue-600" href="/bills/{bill_code}">Back to {bill_code}</a>
-					</p>
-				</div>
 			</div>
 		{/if}
+		<div class="border"></div>
 
 		<iframe class="w-full grow" title="bill info" src={testimony_url}></iframe>
 	{:else}

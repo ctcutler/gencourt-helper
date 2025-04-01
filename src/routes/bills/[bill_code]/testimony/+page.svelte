@@ -13,8 +13,16 @@
 <div class="flex h-dvh flex-col">
 	{#if bill}
 		{#if bill.upcoming_hearings}
-			<div class="flex bg-yellow-200 p-2">
-				<div class="flex-1">
+			<div class=" bg-yellow-200 p-2">
+				<div class="float-right rounded-lg bg-yellow-50 p-2 text-right">
+					<p>
+						<a class="font-bold text-blue-600" href="/bills">Back to Hearings</a>
+					</p>
+					<p>
+						<a class="font-bold text-blue-600" href="/bills/{bill_code}">Back to {bill_code}</a>
+					</p>
+				</div>
+				<div>
 					<p>
 						To see what others have said about <a
 							href="/bills/{bill_code}"
@@ -26,16 +34,9 @@
 						<li>Select <span class="font-bold">{bill_code}</span> from the list of bills</li>
 					</ol>
 				</div>
-				<div class="flex-1 text-right">
-					<p>
-						<a class="font-bold text-blue-600" href="/bills">Back to Hearings</a>
-					</p>
-					<p>
-						<a class="font-bold text-blue-600" href="/bills/{bill_code}">Back to {bill_code}</a>
-					</p>
-				</div>
 			</div>
 		{/if}
+		<div class="border"></div>
 
 		<iframe
 			class="w-full grow"
