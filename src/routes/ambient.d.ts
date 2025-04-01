@@ -19,3 +19,8 @@ type Committee = {
     name: string,
     bills_with_hearings: Array<Bill>,
 }
+
+type DocketInfo = {
+    bill_codes_to_dockets: Map<string, Array<DocketEntry>>,
+    bill_codes_to_upcoming_hearings: Map<string, Array<DocketEntry>>,
+}
