@@ -34,7 +34,7 @@ async function fetchData(fetch: Function, url: string): Promise<string> {
 }
 
 // returns an "invalid date" Date object if no date is found
-function parse_date_from_description(description: string): Date {
+export function _parse_date_from_description(description: string): Date {
   if (description) {
     const date_match = description.match(DATE_RE);
     const time_match = description.match(TIME_RE);
@@ -119,7 +119,7 @@ async function build_docket_info(): Promise<DocketInfo> {
   for (const de of docket_entries) {
     const bill_code = de[DOCKET_BILL_CODE_INDEX];
     const description = de[DOCKET_DESCRIPTION_INDEX];
-    const date = parse_date_from_description(description);
+    const date = _parse_date_from_description(description);
     const is_hearing = description?.search(/hearing/i) != -1;
     const is_senate = de[DOCKET_BODY_INDEX] == "S";
 
