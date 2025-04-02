@@ -11,10 +11,9 @@
 			opposition.
 		</p>
 		<p class="max-w-4xl text-right text-xs italic">
-			(Built by <a href="https://github.com/ctcutler" class="font-bold text-blue-600">Chris Cutler</a>. <a
-				class="font-bold text-blue-600"
-				href="mailto:gencourthelper@gmail.com">Feedback</a
-			>
+			(Built by <a href="https://github.com/ctcutler" class="font-bold text-blue-600"
+				>Chris Cutler</a
+			>. <a class="font-bold text-blue-600" href="mailto:gencourthelper@gmail.com">Feedback</a>
 			is welcome and you can read the
 			<a class="font-bold text-blue-600" href="https://github.com/ctcutler/gencourt-helper"
 				>source code here.</a

@@ -12,9 +12,11 @@
 	{#if bill}
 		{#if bill.upcoming_hearings}
 			<div class="bg-yellow-200 p-2">
-				<div class="float-right rounded-lg bg-yellow-50 p-2 text-right">
-					<p>
-						Back to: <a class="font-bold text-blue-600" href="/bills">Hearings</a>
+				<div class="float-right text-right">
+					<p class="p-1">
+						<a class="rounded-lg bg-yellow-50 p-1 font-bold text-blue-600" href="/bills"
+							>Back to Hearings</a
+						>
 					</p>
 				</div>
 				<div>
