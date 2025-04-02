@@ -62,7 +62,7 @@ export function _parse_date_from_description(description: string): Date {
 }
 
 // returns empty string if committee is not found
-function parse_committee_from_description(committees: Array<string>, description: string): string {
+export function _parse_committee_from_description(committees: Array<string>, description: string): string {
   if (description) {
     for (const committee of committees) {
       if (description.search(new RegExp(committee)) != -1) {
@@ -73,7 +73,7 @@ function parse_committee_from_description(committees: Array<string>, description
   return "";
 }
 
-function get_house_committees(bill_docket: Array<DocketEntry>): Array<string> {
+export function _get_house_committees(bill_docket: Array<DocketEntry>): Array<string> {
   return bill_docket.filter(
     docket_entry => !docket_entry.is_senate && docket_entry.committee
   ).map(
@@ -124,7 +124,7 @@ async function build_docket_info(): Promise<DocketInfo> {
     const is_senate = de[DOCKET_BODY_INDEX] == "S";
 
     // check for new committee and use it for this and subsequent docket entries if found
-    const committee = parse_committee_from_description(committees, description);
+    const committee = _parse_committee_from_description(committees, description);
     if (committee) {
       const fully_qualified_committee = (is_senate ? "Senate" : "House") + " " + committee;
       bill_codes_to_committees.set(bill_code, fully_qualified_committee);
@@ -164,7 +164,7 @@ async function build_bills(): Promise<Array<Bill>> {
       docket: bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || [],
       title: bill_fields[LSRS_BILL_TITLE_INDEX],
       bill_code: bill_fields[LSRS_BILL_CODE_INDEX],
-      house_committees: get_house_committees(bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || []),
+      house_committees: _get_house_committees(bill_codes_to_dockets.get(bill_fields[LSRS_BILL_CODE_INDEX]) || []),
       upcoming_hearings: bill_codes_to_upcoming_hearings.get(bill_fields[LSRS_BILL_CODE_INDEX]),
     }
   ));
