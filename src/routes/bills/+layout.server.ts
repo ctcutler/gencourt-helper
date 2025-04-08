@@ -28,7 +28,7 @@ const COMMITTEES_NAME_INDEX: number = 1;
 const DATE_RE: RegExp = /(\d{2})\/(\d{2})\/(\d{4})/;
 const TIME_RE: RegExp = /(\d{2}):(\d{2}) (am|pm)/;
 
-async function fetchData(fetch: Function, url: string): Promise<string> {
+export async function _fetch_data(fetch: Function, url: string): Promise<string> {
   const response: Response = await fetch(url);
   return await response.text();
 }
@@ -81,8 +81,8 @@ export function _get_house_committees(bill_docket: Array<DocketEntry>): Array<st
   );
 }
 
-async function build_bill_codes_to_ids(): Promise<Map<string, number>> {
-  const lsrs_only = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/LSRsOnly.txt");
+export async function _build_bill_codes_to_ids(): Promise<Map<string, number>> {
+  const lsrs_only = await _fetch_data(fetch, "https://gc.nh.gov/dynamicdatadump/LSRsOnly.txt");
 
   return new Map(
     lsrs_only.split("\n").map(
@@ -94,7 +94,7 @@ async function build_bill_codes_to_ids(): Promise<Map<string, number>> {
 }
 
 async function build_committees(): Promise<Array<string>> {
-  const committees_pipe_separated = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Committees.txt");
+  const committees_pipe_separated = await _fetch_data(fetch, "https://gc.nh.gov/dynamicdatadump/Committees.txt");
   return committees_pipe_separated.split(
     "\n"
   ).filter(
@@ -109,7 +109,7 @@ async function build_committees(): Promise<Array<string>> {
 
 async function build_docket_info(): Promise<DocketInfo> {
   const committees: Array<string> = await build_committees();
-  const docket = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Docket.txt");
+  const docket = await _fetch_data(fetch, "https://gc.nh.gov/dynamicdatadump/Docket.txt");
   const docket_entries: Array<Array<string>> = docket.split("\n").map(x => x.split("|"));
   const bill_codes_to_dockets: Map<string, Array<DocketEntry>> = new Map();
   const bill_codes_to_committees: Map<string, string> = new Map();
@@ -153,9 +153,9 @@ async function build_docket_info(): Promise<DocketInfo> {
 }
 
 async function build_bills(): Promise<Array<Bill>> {
-  const bill_codes_to_ids = await build_bill_codes_to_ids();
+  const bill_codes_to_ids = await _build_bill_codes_to_ids();
   const { bill_codes_to_dockets, bill_codes_to_upcoming_hearings } = await build_docket_info();
-  const lsrs = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/LSRs.txt");
+  const lsrs = await _fetch_data(fetch, "https://gc.nh.gov/dynamicdatadump/LSRs.txt");
   return lsrs.split("\n").map(
     x => x.split("|")
   ).map(bill_fields => (
