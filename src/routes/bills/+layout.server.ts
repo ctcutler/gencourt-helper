@@ -192,6 +192,12 @@ async function build_hearings(bills: Array<Bill>): Promise<Map<string, Map<strin
   // for every committee, sort bills by hearing date
   for (const [committee, committe_hearings] of _hearings) {
     _hearings.set(committee, new Map([...committe_hearings.entries()].sort()));
+
+    // for every hearing date, sort bills by bill code
+    for (const [hearing_date, bills] of committe_hearings) {
+      // assumes all bill codes begin with exactly two letters ("hb" or "sb")
+      bills.sort((a, b) => parseInt(a.bill_code.substring(2)) - parseInt(b.bill_code.substring(2)));
+    }
   }
 
   return _hearings;
