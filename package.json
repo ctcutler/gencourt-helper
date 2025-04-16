@@ -27,7 +27,6 @@
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.4",
 		"@types/luxon": "^3.4.2",
-		"@types/regexp.escape": "^2.0.0",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
 		"eslint-plugin-svelte": "^3.0.0",
@@ -45,7 +44,6 @@
 		"vitest": "^3.0.0"
 	},
 	"dependencies": {
-		"luxon": "^3.5.0",
-		"regexp.escape": "^2.0.1"
+		"luxon": "^3.5.0"
 	}
 }
