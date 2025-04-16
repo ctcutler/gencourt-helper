@@ -1,5 +1,8 @@
 import type { LayoutServerLoad } from './$types';
 import { DateTime } from 'luxon';
+// Should use Regex.escape() instead once it is widely supported. For now we're 
+// importing the polyfill implementation (though not bothering to polyfill it)
+import escape from 'regexp.escape';
 
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
@@ -65,7 +68,7 @@ export function _parse_date_from_description(description: string): Date {
 export function _parse_committee_from_description(committees: Array<string>, description: string): string {
   if (description) {
     for (const committee of committees) {
-      if (description.search(new RegExp(committee)) != -1) {
+      if (description.search(new RegExp(escape(committee))) != -1) {
         return committee;
       }
     }
