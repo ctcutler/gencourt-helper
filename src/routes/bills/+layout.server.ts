@@ -208,10 +208,12 @@ async function build_hearings(bills: Array<Bill>): Promise<Map<string, Map<strin
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
   if (!bills || !last_bills_retrieval || new Date().getTime() - last_bills_retrieval.getTime() > BILLS_CACHE_EXPIRY) {
+    console.log("retrieving bills");
     bills = await build_bills();
     hearings = await build_hearings(bills);
 
     last_bills_retrieval = new Date();
+    console.log("bills retrieved");
   }
 
   return {
