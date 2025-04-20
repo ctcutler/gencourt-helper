@@ -71,9 +71,12 @@ export function _parse_date_from_description(description: string): Date {
 export function _parse_committee_from_description(committees: Array<string>, description: string): string {
   if (description) {
     for (const committee of committees) {
+      console.log(`parsing ${committee} from ${description}`);
       if (description.search(new RegExp(regexescape(committee))) != -1) {
+        console.log(`found ${committee} in ${description}`);
         return committee;
       }
+      console.log(`didn't find ${committee} in ${description}`);
     }
   }
   return "";
