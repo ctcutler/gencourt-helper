@@ -68,12 +68,12 @@ export function _parse_date_from_description(description: string): Date {
 }
 
 // returns empty string if committee is not found
-export function _parse_committee_from_description(committees: Array<string>, description: string): string {
+export function _parse_committee_from_description(committees: Array<Array<string>>, description: string): string {
   console.log(`parsing from ${description}`);
 
   if (description) {
-    for (const committee of committees) {
-      if (description.search(new RegExp(regexescape(committee))) != -1) {
+    for (const [committee, escaped_committee] of committees) {
+      if (description.search(new RegExp(escaped_committee)) != -1) {
         console.log(`found ${committee} in ${description}`);
         return committee;
       }
@@ -119,7 +119,7 @@ async function build_committees(): Promise<Array<string>> {
 }
 
 async function build_docket_info(): Promise<DocketInfo> {
-  const committees: Array<string> = await build_committees();
+  const committees: Array<Array<string>> = (await build_committees()).map(x => [x, regexescape(x)]);
   const docket = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Docket.txt");
   const docket_entries: Array<Array<string>> = docket.split("\n").map(x => x.split("|"));
   const bill_codes_to_dockets: Map<string, Array<DocketEntry>> = new Map();
