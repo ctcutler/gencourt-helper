@@ -32,10 +32,8 @@ const DATE_RE: RegExp = /(\d{2})\/(\d{2})\/(\d{4})/;
 const TIME_RE: RegExp = /(\d{2}):(\d{2}) (am|pm)/;
 
 async function fetchData(fetch: Function, url: string): Promise<string> {
-  console.log(`About to fetch ${url}`);
   const response: Response = await fetch(url);
   const response_text =  await response.text();
-  console.log(`Completed fetching ${url}`);
   return response_text;
 }
 
@@ -69,17 +67,13 @@ export function _parse_date_from_description(description: string): Date {
 
 // returns empty string if committee is not found
 export function _parse_committee_from_description(committees: Array<Array<string>>, description: string): string {
-  console.log(`parsing from ${description}`);
-
   if (description) {
     for (const [committee, escaped_committee] of committees) {
       if (description.search(new RegExp(escaped_committee)) != -1) {
-        console.log(`found ${committee} in ${description}`);
         return committee;
       }
     }
   }
-  console.log(`didn't find any committees in ${description}`);
 
   return "";
 }
@@ -127,7 +121,6 @@ async function build_docket_info(): Promise<DocketInfo> {
   const bill_codes_to_upcoming_hearings: Map<string, Array<DocketEntry>> = new Map();
   const now: Date = new Date();
 
-  console.log("starting docket entry processing");
   for (const de of docket_entries) {
     const bill_code = de[DOCKET_BILL_CODE_INDEX];
     const description = de[DOCKET_DESCRIPTION_INDEX];
@@ -159,7 +152,6 @@ async function build_docket_info(): Promise<DocketInfo> {
       bill_codes_to_upcoming_hearings.get(bill_code)?.push(docket_entry);
     }
   }
-  console.log("completed docket entry processing");
 
   return {
     bill_codes_to_dockets, bill_codes_to_upcoming_hearings
@@ -220,12 +212,10 @@ async function build_hearings(bills: Array<Bill>): Promise<Map<string, Map<strin
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
   if (!bills || !last_bills_retrieval || new Date().getTime() - last_bills_retrieval.getTime() > BILLS_CACHE_EXPIRY) {
-    console.log("retrieving bills");
     bills = await build_bills();
     hearings = await build_hearings(bills);
 
     last_bills_retrieval = new Date();
-    console.log("bills retrieved");
   }
 
   return {
