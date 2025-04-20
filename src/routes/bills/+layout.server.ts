@@ -1,6 +1,9 @@
 import type { LayoutServerLoad } from './$types';
 import { DateTime } from 'luxon';
 
+// also: this is temporary... when Regex.escape() support is widespread we'll switch to that
+import regexescape from 'regexp.escape';
+
 // yes, this state is shared by all users; that's ok
 let bills: Array<Bill>;
 let hearings: Map<string, Map<string, Array<Bill>>>;
@@ -30,7 +33,8 @@ const TIME_RE: RegExp = /(\d{2}):(\d{2}) (am|pm)/;
 
 async function fetchData(fetch: Function, url: string): Promise<string> {
   const response: Response = await fetch(url);
-  return await response.text();
+  const response_text =  await response.text();
+  return response_text;
 }
 
 // returns an "invalid date" Date object if no date is found
@@ -62,14 +66,15 @@ export function _parse_date_from_description(description: string): Date {
 }
 
 // returns empty string if committee is not found
-export function _parse_committee_from_description(committees: Array<string>, description: string): string {
+export function _parse_committee_from_description(committees: Array<Array<string>>, description: string): string {
   if (description) {
-    for (const committee of committees) {
-      if (description.search(new RegExp(committee)) != -1) {
+    for (const [committee, escaped_committee] of committees) {
+      if (description.search(new RegExp(escaped_committee)) != -1) {
         return committee;
       }
     }
   }
+
   return "";
 }
 
@@ -108,7 +113,7 @@ async function build_committees(): Promise<Array<string>> {
 }
 
 async function build_docket_info(): Promise<DocketInfo> {
-  const committees: Array<string> = await build_committees();
+  const committees: Array<Array<string>> = (await build_committees()).map(x => [x, regexescape(x)]);
   const docket = await fetchData(fetch, "https://gc.nh.gov/dynamicdatadump/Docket.txt");
   const docket_entries: Array<Array<string>> = docket.split("\n").map(x => x.split("|"));
   const bill_codes_to_dockets: Map<string, Array<DocketEntry>> = new Map();
@@ -147,10 +152,12 @@ async function build_docket_info(): Promise<DocketInfo> {
       bill_codes_to_upcoming_hearings.get(bill_code)?.push(docket_entry);
     }
   }
+
   return {
     bill_codes_to_dockets, bill_codes_to_upcoming_hearings
   }
 }
+
 
 async function build_bills(): Promise<Array<Bill>> {
   const bill_codes_to_ids = await build_bill_codes_to_ids();
