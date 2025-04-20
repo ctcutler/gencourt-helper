@@ -127,6 +127,7 @@ async function build_docket_info(): Promise<DocketInfo> {
   const bill_codes_to_upcoming_hearings: Map<string, Array<DocketEntry>> = new Map();
   const now: Date = new Date();
 
+  console.log("starting docket entry processing");
   for (const de of docket_entries) {
     const bill_code = de[DOCKET_BILL_CODE_INDEX];
     const description = de[DOCKET_DESCRIPTION_INDEX];
@@ -158,10 +159,13 @@ async function build_docket_info(): Promise<DocketInfo> {
       bill_codes_to_upcoming_hearings.get(bill_code)?.push(docket_entry);
     }
   }
+  console.log("completed docket entry processing");
+
   return {
     bill_codes_to_dockets, bill_codes_to_upcoming_hearings
   }
 }
+
 
 async function build_bills(): Promise<Array<Bill>> {
   const bill_codes_to_ids = await build_bill_codes_to_ids();
