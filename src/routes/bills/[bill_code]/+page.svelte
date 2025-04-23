@@ -4,7 +4,7 @@
 
 	let { data } = $props();
 	const { bill_code } = page.params;
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
+	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
 	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 </script>
 

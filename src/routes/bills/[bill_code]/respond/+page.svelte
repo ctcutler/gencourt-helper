@@ -7,7 +7,7 @@
 
 	const SENATE_TESTIMONY_URL = 'https://gc.nh.gov/remotecommittee/senate.aspx';
 	const HOUSE_TESTIMONY_URL = 'https://gc.nh.gov/house/committees/remotetestimony/default.aspx';
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
+	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
 	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 	const committee: string = bill?.upcoming_hearings?.[0].committee;
 	const is_senate: Boolean = bill?.upcoming_hearings?.[0].is_senate;
