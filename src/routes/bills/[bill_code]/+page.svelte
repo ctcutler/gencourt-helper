@@ -26,12 +26,12 @@
 					</p>
 					<ul class="list-outside list-disc ps-5">
 						<li>
-							<a class="font-bold text-blue-600" href="{bill_code}/testimony"
+							<a class="font-bold text-blue-600" href="{bill.bill_code}/testimony"
 								>See other people's testimony</a
 							>
 						</li>
 						<li>
-							<a class="font-bold text-blue-600" href="{bill_code}/respond">Support or oppose it</a>
+							<a class="font-bold text-blue-600" href="{bill.bill_code}/respond">Support or oppose it</a>
 						</li>
 					</ul>
 				</div>
