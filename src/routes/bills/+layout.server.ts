@@ -33,8 +33,7 @@ const TIME_RE: RegExp = /(\d{2}):(\d{2}) (am|pm)/;
 
 async function fetchData(fetch: Function, url: string): Promise<string> {
   const response: Response = await fetch(url);
-  const response_text =  await response.text();
-  return response_text;
+  return await response.text();
 }
 
 // returns an "invalid date" Date object if no date is found
