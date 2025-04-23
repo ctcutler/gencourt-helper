@@ -6,7 +6,7 @@
 	const { bill_code } = page.params;
 
 	const HOUSE_SUBMITTED_TESTIMONY_URL = '';
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code == bill_code);
+	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
 	const committee: string | undefined = bill?.house_committees?.[0];
 </script>
 
