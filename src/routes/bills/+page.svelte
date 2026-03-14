@@ -1,5 +1,26 @@
 <script lang="ts">
 	let { data } = $props();
+
+	let sortOrder = $state<'committee' | 'date'>('committee');
+
+	const sortedHearings = $derived.by(() => {
+		if (sortOrder === 'committee') {
+			return data.hearings;
+		}
+		// Invert to Map<date, Map<committee, Array<Bill>>>
+		let byDate: Map<string, Map<string, Array<Bill>>> = new Map();
+		for (const [committee, dates] of data.hearings) {
+			for (const [date, bills] of dates) {
+				if (!byDate.has(date)) byDate.set(date, new Map());
+				byDate.get(date)!.set(committee, bills);
+			}
+		}
+		byDate = new Map([...byDate.entries()].sort());
+		for (const [date, committees] of byDate) {
+			byDate.set(date, new Map([...committees.entries()].sort()));
+		}
+		return byDate;
+	});
 </script>
 
 <div class="flex justify-center bg-yellow-200 p-2">
@@ -26,14 +47,26 @@
 <div class="flex justify-center">
 	<div class="max-w-4xl p-5">
 		<h1 class="text-3xl font-bold">Scheduled Hearings</h1>
+		<label class="text-sm">
+			Sort by:
+			<!--select bind:value={sortOrder} class="ml-1 border rounded px-2 pr-8" -->
+			<select bind:value={sortOrder} class="text-sm rounded">
+				<option value="committee">Committee</option>
+				<option value="date">Date</option>
+			</select>
+		</label>
 		<ul>
-			{#each data.hearings as [committee, dates]}
+			{#each sortedHearings as [outer, inner]}
 				<li>
-					<h2 class="pt-6 text-xl font-bold">{committee} Committee</h2>
+					<h2 class="pt-6 text-xl font-bold">
+						{#if sortOrder === 'committee'}{outer} Committee{:else}{outer}{/if}
+					</h2>
 					<ul>
-						{#each dates as [date, bills]}
+						{#each inner as [innerKey, bills]}
 							<li>
-								<h3 class="text-l pt-2 pl-4 italic">{date}</h3>
+								<h3 class="text-l pt-2 pl-4 italic">
+									{#if sortOrder === 'committee'}{innerKey}{:else}{innerKey} Committee{/if}
+								</h3>
 								<ul>
 									{#each bills as bill}
 										<li class="pl-8">

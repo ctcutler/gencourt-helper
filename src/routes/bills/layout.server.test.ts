@@ -16,7 +16,7 @@ test('parsing date from good description', () => {
     expect(_parse_date_from_description("Hearing: 01/14/2025, Room 103, LOB, 09:30 am;  SC 5")).toEqual(new Date(d));
 })
 
-const committees = ["Commerce and Consumer Affairs", "Election Law"];
+const committees = [["Commerce and Consumer Affairs", "Commerce and Consumer Affairs"], ["Election Law", "Election Law"]];
 test('parsing committee from bad/empty description', () => {
     expect(_parse_committee_from_description(committees, "foobar")).toEqual("");
     expect(_parse_committee_from_description(committees, "")).toEqual("");
