@@ -5,3 +5,8 @@ This is a wrapper around various pages on the New Hampshire state legislature's 
 - navigate to the form where people can indicate their position on a bill and leave comments
 
 See the latest public version here: https://gencourt-helper.dodgeandburn.net/bills
+
+# Development
+
+- `npm run dev` to run locally
+- develop on `staging` branch then merge to `main` when ready
