@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { format_date } from '$lib/date.js';
+	import { format_date } from '#lib/date.js';
 	import { page } from '$app/state';
 
 	let { data } = $props();

@@ -47,5 +47,9 @@
 	"dependencies": {
 		"luxon": "^3.5.0",
 		"regexp.escape": "^2.0.1"
+	},
+	"imports": {
+		"#lib": "./src/lib/index.js",
+		"#lib/*": "./src/lib/*"
 	}
 }
