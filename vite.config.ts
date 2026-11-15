@@ -4,7 +4,6 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 import adapter from '@sveltejs/adapter-auto';
 
-
 export default defineConfig({
 	plugins: [tailwindcss(), sveltekit()],
 
@@ -12,15 +11,15 @@ export default defineConfig({
 		workspace: [
 			{
 				extends: './vite.config.ts',
-        plugins: [
-          svelteTesting(),
-          sveltekit({
-            // adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-            // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-            // See https://svelte.dev/docs/kit/adapters for more information about adapters.
-            adapter: adapter()
-          })
-        ],
+				plugins: [
+					svelteTesting(),
+					sveltekit({
+						// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
+						// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+						// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+						adapter: adapter()
+					})
+				],
 
 				test: {
 					name: 'client',
