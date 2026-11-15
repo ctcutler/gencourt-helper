@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { format_date } from '$lib/date.js';
+	import { format_date } from '#lib/date.js';
 	import { page } from '$app/state';
 
 	let { data } = $props();
@@ -7,7 +7,9 @@
 
 	const SENATE_TESTIMONY_URL = 'https://gc.nh.gov/remotecommittee/senate.aspx';
 	const HOUSE_TESTIMONY_URL = 'https://gc.nh.gov/house/committees/remotetestimony/default.aspx';
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
+	const bill: Bill | undefined = data.bills.find(
+		(bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase()
+	);
 	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 	const committee: string = bill?.upcoming_hearings?.[0].committee;
 	const is_senate: Boolean = bill?.upcoming_hearings?.[0].is_senate;
@@ -27,8 +29,9 @@
 						>
 					</p>
 					<p class="p-1">
-						<a class="rounded-lg bg-yellow-50 p-1 font-bold text-blue-600" href="/bills/{bill.bill_code}"
-							>Back to {bill.bill_code}</a
+						<a
+							class="rounded-lg bg-yellow-50 p-1 font-bold text-blue-600"
+							href="/bills/{bill.bill_code}">Back to {bill.bill_code}</a
 						>
 					</p>
 				</div>

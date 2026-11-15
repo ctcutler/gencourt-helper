@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { format_date } from '$lib/date.js';
+	import { format_date } from '#lib/date.js';
 	import { page } from '$app/state';
 
 	let { data } = $props();
 	const { bill_code } = page.params;
 
 	const HOUSE_SUBMITTED_TESTIMONY_URL = '';
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
+	const bill: Bill | undefined = data.bills.find(
+		(bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase()
+	);
 	const committee: string | undefined = bill?.house_committees?.[0];
 </script>
 
@@ -21,8 +23,9 @@
 						>
 					</p>
 					<p class="p-1">
-						<a class="rounded-lg bg-yellow-50 p-1 font-bold text-blue-600" href="/bills/{bill.bill_code}"
-							>Back to {bill.bill_code}</a
+						<a
+							class="rounded-lg bg-yellow-50 p-1 font-bold text-blue-600"
+							href="/bills/{bill.bill_code}">Back to {bill.bill_code}</a
 						>
 					</p>
 				</div>

@@ -2,15 +2,24 @@ import tailwindcss from '@tailwindcss/vite';
 import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import adapter from '@sveltejs/adapter-netlify';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
+	plugins: [tailwindcss(), sveltekit({ adapter: adapter() })],
 
 	test: {
 		workspace: [
 			{
 				extends: './vite.config.ts',
-				plugins: [svelteTesting()],
+				plugins: [
+					svelteTesting(),
+					sveltekit({
+						// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
+						// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
+						// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+						adapter: adapter()
+					})
+				],
 
 				test: {
 					name: 'client',
