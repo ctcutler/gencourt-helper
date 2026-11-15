@@ -50,7 +50,7 @@
 		<label class="text-sm">
 			Sort by:
 			<!--select bind:value={sortOrder} class="ml-1 border rounded px-2 pr-8" -->
-			<select bind:value={sortOrder} class="text-sm rounded">
+			<select bind:value={sortOrder} class="rounded text-sm">
 				<option value="committee">Committee</option>
 				<option value="date">Date</option>
 			</select>

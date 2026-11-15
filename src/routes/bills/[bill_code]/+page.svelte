@@ -4,7 +4,9 @@
 
 	let { data } = $props();
 	const { bill_code } = page.params;
-	const bill: Bill | undefined = data.bills.find((bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase());
+	const bill: Bill | undefined = data.bills.find(
+		(bill) => bill.bill_code.toLowerCase() == bill_code.toLowerCase()
+	);
 	const hearing_date: string = format_date(bill?.upcoming_hearings?.[0].date);
 </script>
 
@@ -31,7 +33,9 @@
 							>
 						</li>
 						<li>
-							<a class="font-bold text-blue-600" href="{bill.bill_code}/respond">Support or oppose it</a>
+							<a class="font-bold text-blue-600" href="{bill.bill_code}/respond"
+								>Support or oppose it</a
+							>
 						</li>
 					</ul>
 				</div>
